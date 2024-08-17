@@ -66,6 +66,7 @@ body {
     width: 50px;
     display: flex;
     align-items: center;
+    margin-right: 20px;
     background-color: #8BE9FD20;
 }
 #theme-connections {
@@ -214,12 +215,13 @@ h1 {
     border-right: .15em solid;
     white-space: nowrap;
     overflow: hidden;
-    animation: typing 2s steps(14, end), blink-caret 0.75s 14;
+    animation: typing 4s steps(14, end), blink-caret 0.75s 14;
 }
 
 @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+    0% { width: 0 }
+    50% { width: 0% }
+    100% { width: 100% }
 }
 
 @keyframes blink-caret {
