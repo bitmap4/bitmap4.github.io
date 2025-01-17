@@ -4,6 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://bitmap4.github.io',
 	integrations: [
 		starlight({
 			title: 'bitmap4',
