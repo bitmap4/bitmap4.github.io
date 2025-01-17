@@ -6,16 +6,16 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
+			title: 'bitmap4',
 			social: {
-				github: 'https://github.com/withastro/starlight',
+				github: 'https://github.com/bitmap4',
 			},
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Projects',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'placeholder', slug: 'projects/placeholder' },
 					],
 				},
 				{

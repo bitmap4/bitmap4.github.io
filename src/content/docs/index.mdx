@@ -1,36 +1,58 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: bitmap4's portfolio
+# description: Get started building your docs site with Starlight.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Researcher and Developer
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: See my projects
+      link: /projects/placeholder
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
+    - text: Resume
+      link: https://drive.google.com/file/d/1L8lr5-B45VnHHbTIvZRya9fNBJOjI8h3/
+      icon: document
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## About Me
+
+I'm Abhyudit Singh, an undergraduate at IIIT Hyderabad. 
+I'm passionate about cybersecurity, machine learning, and software development. 
+
+
+## Featured Projects
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Language Identification Analysis" icon="code">
+		A comparative study of various language classifiers based on different combinations of linguistic features vs a baseline n-grams based model
+		[`GitHub`](https://github.com/bitmap4/language-identification-analysis)
+		[`Report`](https://drive.google.com/file/d/1AOhGJupvoLIHYv3SttUXIJ8m7ax3K5HE)
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Morphological Inflections" icon="code">
+		Implemented a morph inflection predictor using a RNN model and compared against baseline metrics
+		[`GitHub`](https://github.com/bitmap4/morphological-inflections)
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="C-Shell" icon="code">
+		Shell written in C for the course Operating Systems and Networks
+		[`GitHub`](https://github.com/bitmap4/shell-osn)
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="Kafka." icon="code">
+		Images to Video generator for the course Introduction to Software Systems
+		[`GitHub`](https://github.com/bitmap4/issproject)
 	</Card>
+</CardGrid>
+
+## Let's Connect
+
+<CardGrid stagger>
+    <Card title="GitHub" icon="github">
+        Check out my code and contributions on [GitHub](https://github.com/bitmap4)
+    </Card>
+    <Card title="LinkedIn" icon="linkedin">
+        Connect with me on [LinkedIn](https://linkedin.com/in/abhyudit-singh-07aaba265)
+    </Card>
 </CardGrid>
