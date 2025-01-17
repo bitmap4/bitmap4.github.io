@@ -17,7 +17,16 @@ export default defineConfig({
 				},
 				{
 					label: 'Club Stuff',
-					autogenerate: { directory: 'clubs' },
+					items: [
+						{
+							label: 'Game Theory @ IIITH',
+							autogenerate: { directory: 'clubs/game-theory' },
+						},
+						{
+							label: '0x1337: The Hacking Club',
+							autogenerate: {directory: 'clubs/0x1337'}
+						}
+					]
 				},
 				{
 					label: 'Misc',
