@@ -13,14 +13,15 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Projects',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'placeholder', slug: 'projects/placeholder' },
-					],
+					autogenerate: { directory: 'projects' },
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Club Stuff',
+					autogenerate: { directory: 'clubs' },
+				},
+				{
+					label: 'Misc',
+					autogenerate: { directory: 'misc' },
 				},
 			],
 		}),
