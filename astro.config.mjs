@@ -33,6 +33,10 @@ export default defineConfig({
 					label: 'Misc',
 					autogenerate: { directory: 'misc' },
 				},
+				{
+					label: 'CTF Write-Ups',
+					autogenerate: { directory: 'writeups' },
+				}
 			],
 		}),
 	],
