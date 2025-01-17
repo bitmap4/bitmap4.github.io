@@ -16,7 +16,7 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
 ## About Me
 
@@ -31,18 +31,62 @@ I'm passionate about cybersecurity, machine learning, and software development.
 		A comparative study of various language classifiers based on different combinations of linguistic features vs a baseline n-grams based model
 		[`GitHub`](https://github.com/bitmap4/language-identification-analysis)
 		[`Report`](https://drive.google.com/file/d/1AOhGJupvoLIHYv3SttUXIJ8m7ax3K5HE)
+		<LinkButton 
+			href="/projects/01-lid" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '1px solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				color: 'var(--sl-color-accent-high)'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
 	</Card>
 	<Card title="Morphological Inflections" icon="translate">
 		Implemented a morph inflection predictor using a RNN model and compared against baseline metrics
 		[`GitHub`](https://github.com/bitmap4/morphological-inflections)
+		<LinkButton 
+			href="/projects/02-morph" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '1px solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				color: 'var(--sl-color-accent-high)'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
 	</Card>
 	<Card title="C-Shell" icon="seti:shell">
 		Shell written in C for the course Operating Systems and Networks
 		[`GitHub`](https://github.com/bitmap4/shell-osn)
+		<LinkButton 
+			href="/projects/04-shell-v0" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '1px solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				color: 'var(--sl-color-accent-high)'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
 	</Card>
 	<Card title="Kafka." icon="seti:video">
 		Images to Video generator for the course Introduction to Software Systems
 		[`GitHub`](https://github.com/bitmap4/issproject)
+		<LinkButton 
+			href="/projects/05-kafka-v0" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '1px solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				color: 'var(--sl-color-accent-high)'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
 	</Card>
 </CardGrid>
 
