@@ -5,6 +5,9 @@ description: Web application for approximating course grade cutoffs using crowds
 
 Website for approximating the grade cutoffs for courses by using user-submitted data.
 
+[Website](https://grades-site.onrender.com/)
+[GitHub](https://github.com/bitmap4/grades_site)
+
 ## Features
 
 - User authentication with JWT
