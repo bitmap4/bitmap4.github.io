@@ -1,6 +1,7 @@
 ---
 title: Grade Cutoff Squeezer
 description: Web application for approximating course grade cutoffs using crowdsourced data
+draft: true
 ---
 
 Website for approximating the grade cutoffs for courses by using user-submitted data.

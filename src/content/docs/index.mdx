@@ -8,7 +8,7 @@ hero:
     file: ../../assets/code.svg
   actions:
     - text: Stuff I've Made
-      link: /projects/01-lid
+      link: /projects/01-nfs-v0
       icon: right-arrow
     - text: Resume
       link: https://drive.google.com/file/d/1L8lr5-B45VnHHbTIvZRya9fNBJOjI8h3/
@@ -21,35 +21,27 @@ import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 ## About Me
 
 I'm Abhyudit Singh, an undergraduate at IIIT Hyderabad. 
-I'm passionate about cybersecurity, machine learning, and software development. 
+I'm passionate about cybersecurity, machine learning, software development and I sometimes like to dabble in competitive programming. I'm rated 1535 on [Codeforces](https://codeforces.com/profile/BitMap4) and have solved [AoC](https://adventofcode.com) 2024 and currently solving 2025. 
 
 
-## Featured Projects
+## Open Source Contributions
 
 <CardGrid stagger>
-	<Card title="Language Identification Analysis" icon="translate">
-		A comparative study of various language classifiers based on different combinations of linguistic features vs a baseline n-grams based model
-		[`GitHub`](https://github.com/bitmap4/language-identification-analysis)
-		[`Report`](https://drive.google.com/file/d/1AOhGJupvoLIHYv3SttUXIJ8m7ax3K5HE)
-		<LinkButton 
-			href="/projects/01-lid" 
-			icon="right-arrow" 
-			style={{
-				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
-				borderRadius: 0,
-				padding: 0,
-				boxSizing: 'border-box',
-				color: 'var(--sl-color-accent-high)',
-				fontSize: '0.75em'
-			}}
-			variant="minimal"
-		>Read More</LinkButton>
+	<Card title="Microsoft PowerToys" icon="seti:windows">
+		Contributed to Microsoft PowerToys, a set of utilities for power users to tune and streamline their Windows experience
+		[`GitHub`](https://github.com/microsoft/PowerToys)
 	</Card>
-	<Card title="Morphological Inflections" icon="translate">
-		Implemented a morph inflection predictor using a RNN model and compared against baseline metrics
-		[`GitHub`](https://github.com/bitmap4/morphological-inflections)
+</CardGrid>
+
+
+## Featured Projects & Research
+
+<CardGrid stagger>
+	<Card title="Network File System" icon="seti:folder">
+		A distributed network file system implementation in C featuring a naming server architecture for coordinated file operations across multiple storage servers
+		[`GitHub`](https://github.com/bitmap4/nfs)
 		<LinkButton 
-			href="/projects/02-morph" 
+			href="/projects/01-nfs-v0" 
 			icon="right-arrow" 
 			style={{
 				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
@@ -63,10 +55,10 @@ I'm passionate about cybersecurity, machine learning, and software development.
 		>Read More</LinkButton>
 	</Card>
 	<Card title="C-Shell" icon="seti:shell">
-		Shell written in C for the course Operating Systems and Networks
+		A feature-rich shell implementation written in C with custom commands, background processes, and session history
 		[`GitHub`](https://github.com/bitmap4/shell-osn)
 		<LinkButton 
-			href="/projects/04-shell-v0" 
+			href="/projects/02-shell-v0" 
 			icon="right-arrow" 
 			style={{
 				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
@@ -79,11 +71,43 @@ I'm passionate about cybersecurity, machine learning, and software development.
 			variant="minimal"
 		>Read More</LinkButton>
 	</Card>
-	<Card title="Kafka." icon="seti:video">
-		Images to Video generator for the course Introduction to Software Systems
-		[`GitHub`](https://github.com/bitmap4/issproject)
+	<Card title="Buy-Sell-Rent Portal" icon="seti:javascript">
+		Full-stack MERN marketplace with real-time chat (sub-100ms), AI chatbot and secure OTP-verified checkout
+		[`GitHub`](https://github.com/bitmap4/buy-sell-rent)
 		<LinkButton 
-			href="/projects/05-kafka-v0" 
+			href="/projects/03-buy-sell-rent-portal" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				boxSizing: 'border-box',
+				color: 'var(--sl-color-accent-high)',
+				fontSize: '0.75em'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
+	</Card>
+	<Card title="API Monitoring Dashboard" icon="seti:python">
+		Scalable monitoring dashboard querying 50K+ logs/day from ClickHouse with sub-second latency and 99.5% alert accuracy
+		<LinkButton 
+			href="/projects/04-api-monitoring-dashboard" 
+			icon="right-arrow" 
+			style={{
+				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
+				borderRadius: 0,
+				padding: 0,
+				boxSizing: 'border-box',
+				color: 'var(--sl-color-accent-high)',
+				fontSize: '0.75em'
+			}}
+			variant="minimal"
+		>Read More</LinkButton>
+	</Card>
+	<Card title="Knowledge Tracing Research" icon="open-book">
+		Developing an efficient mathematical framework for adaptive knowledge assessment with optimal question selection strategies
+		<LinkButton 
+			href="/research/02-knowledge-tracing" 
 			icon="right-arrow" 
 			style={{
 				borderBottom: '0.0625em solid var(--sl-color-accent-high)',
@@ -105,8 +129,11 @@ I'm passionate about cybersecurity, machine learning, and software development.
         Check out my code and contributions on [GitHub](https://github.com/bitmap4)
     </Card>
     <Card title="LinkedIn" icon="linkedin">
-        Connect with me on [LinkedIn](https://linkedin.com/in/abhyudit-singh-07aaba265)
+        Connect with me on [LinkedIn](https://linkedin.com/in/abhyudit-singh)
     </Card>
+	<Card title="Codeforces" icon="seti:json">
+		View my competitive programming profile on [Codeforces](https://codeforces.com/profile/BitMap4) (1535 rated)
+	</Card>
 	<Card title="E-mail" icon="email">
 		Mail me at [abhyudit.singh@research.iiit.ac.in](mailto:abhyudit.singh@research.iiit.ac.in)
 	</Card>

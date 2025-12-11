@@ -1,0 +1,13 @@
+:root {
+	--bg-glow: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+	           radial-gradient(circle at 80% 80%, rgba(245, 87, 108, 0.1) 0%, transparent 50%);
+}
+
+body {
+	background: var(--bg-glow), var(--sl-color-bg);
+	background-attachment: fixed;
+}
+
+.sidebar-pane, nav {
+    background: transparent;
+}
