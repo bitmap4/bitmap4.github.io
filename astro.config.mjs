@@ -1,10 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { passthroughImageService } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://bitmap4.github.io',
+	image: {
+		service: passthroughImageService(),
+	},
 	integrations: [
 		starlight({
 			title: 'bitmap4',
