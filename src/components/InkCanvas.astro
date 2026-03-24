@@ -34,6 +34,12 @@
     mix-blend-mode: multiply;
     filter: url(#rough-ink);
     opacity: 0.85;
+    transition: mix-blend-mode 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+
+  html.dark #ink-canvas {
+    mix-blend-mode: screen;
+    opacity: 0.8;
   }
 </style>
 
@@ -43,6 +49,15 @@
 
   let width: number, height: number;
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function hexToRgba(hex: string, alpha: number) {
+    let c = hex.trim().replace('#', '');
+    if (c.length === 3) c = c.split('').map(x => x + x).join('');
+    const r = parseInt(c.slice(0, 2), 16) || 0;
+    const g = parseInt(c.slice(2, 4), 16) || 0;
+    const b = parseInt(c.slice(4, 6), 16) || 0;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
 
   function resize() {
     const rect = canvas.parentElement!.getBoundingClientRect();
@@ -80,10 +95,16 @@
         });
       }
 
+      const isDark = document.documentElement.classList.contains('dark');
+      const rootStyles = getComputedStyle(document.documentElement);
+      const inkHex = rootStyles.getPropertyValue('--ink').trim() || (isDark ? '#e8e4dc' : '#1c1917');
+      const inkFaintHex = rootStyles.getPropertyValue('--ink-faint').trim() || (isDark ? '#7a746d' : '#a8a29e');
+      const accentHex = rootStyles.getPropertyValue('--accent').trim() || (isDark ? '#e06c53' : '#9e3b2d');
+
       const colors = [
-        'rgba(28, 25, 23, 0.18)', 'rgba(28, 25, 23, 0.14)', 'rgba(28, 25, 23, 0.12)',
-        'rgba(87, 83, 78, 0.13)', 'rgba(158, 59, 45, 0.10)', 'rgba(158, 59, 45, 0.08)',
-        'rgba(120, 113, 108, 0.11)', 'rgba(28, 25, 23, 0.20)'
+        hexToRgba(inkHex, 0.18), hexToRgba(inkHex, 0.14), hexToRgba(inkHex, 0.12),
+        hexToRgba(inkFaintHex, 0.13), hexToRgba(accentHex, 0.10), hexToRgba(accentHex, 0.08),
+        hexToRgba(inkHex, 0.11), hexToRgba(inkHex, 0.20)
       ];
       this.color = colors[Math.floor(Math.random() * colors.length)];
       this.baseWidth = 1 + Math.random() * 4;
@@ -172,10 +193,14 @@
   let dots: InkDot[] = [];
 
   function drawDots() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const rootStyles = getComputedStyle(document.documentElement);
+    const inkHex = rootStyles.getPropertyValue('--ink').trim() || (isDark ? '#e8e4dc' : '#1c1917');
+
     for (const d of dots) {
       ctx.beginPath();
       ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(28, 25, 23, ${d.opacity})`;
+      ctx.fillStyle = hexToRgba(inkHex, d.opacity);
       ctx.fill();
     }
   }
@@ -221,4 +246,14 @@
   init();
 
   window.addEventListener('resize', () => { init(); });
+
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === 'class') {
+        init();
+        break;
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true });
 </script>

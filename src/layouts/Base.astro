@@ -1,5 +1,5 @@
 ---
-import Icon from '../components/Icon.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -18,19 +18,34 @@ const currentPath = Astro.url.pathname;
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
       <div class="container container--wide">
         <div class="site-header__inner">
           <a href="/" class="site-header__name">Abhyudit Singh</a>
-          <nav>
+          <nav style="display: flex; align-items: baseline;">
             <ul class="site-nav">
               <li><a href="/projects" class:list={[{ active: currentPath.startsWith('/projects') }]}>projects</a></li>
               <li><a href="/research" class:list={[{ active: currentPath.startsWith('/research') }]}>research</a></li>
               <li><a href="/blog" class:list={[{ active: currentPath.startsWith('/blog') }]}>blog</a></li>
               <li><a href="/misc" class:list={[{ active: currentPath.startsWith('/misc') }]}>misc</a></li>
             </ul>
+            <ThemeToggle />
           </nav>
         </div>
       </div>

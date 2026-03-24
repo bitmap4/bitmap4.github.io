@@ -1,0 +1,70 @@
+---
+---
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+  <span class="theme-toggle__bracket">[</span>
+  <span class="theme-toggle__text">dark</span>
+  <span class="theme-toggle__bracket">]</span>
+</button>
+
+<style>
+  .theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--ink-subtle);
+    padding: 0;
+    margin-left: var(--space-md);
+    transition: color 0.2s var(--ease);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2em;
+  }
+  
+  .theme-toggle:hover {
+    color: var(--ink);
+  }
+  
+  .theme-toggle__bracket {
+    color: var(--border-dark);
+  }
+  
+  .theme-toggle:hover .theme-toggle__bracket {
+    color: var(--ink-faint);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const text = toggle?.querySelector('.theme-toggle__text');
+
+  function updateText() {
+    if (text) {
+      text.textContent = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    }
+  }
+
+  // Set initial text on load
+  updateText();
+
+  toggle?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    const isDark = document.documentElement.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateText();
+  });
+
+  // Listen for OS theme changes if user hasn't explicitly set a preference
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      if (e.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      updateText();
+    }
+  });
+</script>
