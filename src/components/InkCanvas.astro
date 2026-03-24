@@ -7,24 +7,33 @@
 ---
 
 <div class="ink-canvas-wrap">
+  <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+    <filter id="rough-ink">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
   <canvas id="ink-canvas" aria-hidden="true"></canvas>
 </div>
 
 <style>
   .ink-canvas-wrap {
     position: absolute;
-    inset: 0;
+    inset: -20px -20px -20px 20%;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
-    mask-image: radial-gradient(ellipse 60% 45% at 75% 50%, black 10%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 60% 45% at 75% 50%, black 10%, transparent 100%);
+    mask-image: radial-gradient(ellipse 45% 45% at 50% 50%, black 10%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 45% 45% at 50% 50%, black 10%, transparent 100%);
   }
 
   #ink-canvas {
     width: 100%;
     height: 100%;
     display: block;
+    mix-blend-mode: multiply;
+    filter: url(#rough-ink);
+    opacity: 0.85;
   }
 </style>
 
@@ -118,6 +127,25 @@
         if (p.x > width + 80) p.vx -= 0.08;
         if (p.y < -80) p.vy += 0.08;
         if (p.y > height + 80) p.vy -= 0.08;
+      }
+
+      // Relaxation pass to prevent sharp turns and kinks
+      for (let i = 1; i < this.points.length - 1; i++) {
+        const p = this.points[i];
+        const prev = this.points[i - 1];
+        const next = this.points[i + 1];
+
+        // gently pull towards neighbors
+        const targetX = (prev.x + next.x) / 2;
+        const targetY = (prev.y + next.y) / 2;
+        p.x += (targetX - p.x) * 0.15;
+        p.y += (targetY - p.y) * 0.15;
+
+        // smooth velocities too
+        const targetVx = (prev.vx + next.vx) / 2;
+        const targetVy = (prev.vy + next.vy) / 2;
+        p.vx += (targetVx - p.vx) * 0.15;
+        p.vy += (targetVy - p.vy) * 0.15;
       }
     }
 
