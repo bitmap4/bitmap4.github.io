@@ -185,18 +185,18 @@
     strokes = [];
     dots = [];
 
-    const strokeCount = 20 + Math.floor(Math.random() * 11);
+    const strokeCount = 30 + Math.floor(Math.random() * 11);
     for (let i = 0; i < strokeCount; i++) {
       strokes.push(new InkStroke());
     }
 
-    const dotCount = 60 + Math.floor(Math.random() * 41);
+    const dotCount = 20 + Math.floor(Math.random() * 21);
     for (let i = 0; i < dotCount; i++) {
       dots.push({
         x: width * (0.1 + Math.random() * 0.85),
         y: Math.random() * height,
         r: 1.5 + Math.random() * 4,
-        opacity: 0.4 + Math.random() * 0.5
+        opacity: 0.3 + Math.random() * 0.2
       });
     }
 

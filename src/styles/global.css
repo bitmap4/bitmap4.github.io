@@ -455,7 +455,6 @@ hr {
   display: block;
   padding: var(--space-lg) var(--space-lg);
   margin: 0 calc(-1 * var(--space-lg));
-  border-radius: 8px;
   text-decoration: none;
   transition:
     background-color 0.3s var(--ease),
@@ -471,8 +470,6 @@ hr {
 .project-card:hover {
   background-color: var(--bg-card);
   box-shadow: 0 2px 20px rgba(28, 25, 23, 0.06), 0 1px 3px rgba(28, 25, 23, 0.04);
-  transform: translateY(-1px);
-  border-radius: 8px;
 }
 
 .project-card:hover + .project-card {
@@ -649,7 +646,6 @@ hr {
   display: block;
   padding: var(--space-lg) var(--space-lg);
   margin: 0 calc(-1 * var(--space-lg));
-  border-radius: 8px;
   background: none;
   transition:
     background-color 0.3s var(--ease),
@@ -664,7 +660,6 @@ hr {
 .blog-item:hover {
   background-color: var(--bg-card);
   box-shadow: 0 2px 20px rgba(28, 25, 23, 0.06), 0 1px 3px rgba(28, 25, 23, 0.04);
-  transform: translateY(-1px);
 }
 
 .blog-item__meta {
