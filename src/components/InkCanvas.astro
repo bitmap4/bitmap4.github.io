@@ -9,8 +9,8 @@
 <div class="ink-canvas-wrap">
   <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
     <filter id="rough-ink">
-      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" result="noise" />
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
     </filter>
   </svg>
   <canvas id="ink-canvas" aria-hidden="true"></canvas>
@@ -130,22 +130,23 @@
       }
 
       // Relaxation pass to prevent sharp turns and kinks
+      // use much weaker position pulling to prevent rubber-banding/shrinking
       for (let i = 1; i < this.points.length - 1; i++) {
         const p = this.points[i];
         const prev = this.points[i - 1];
         const next = this.points[i + 1];
 
-        // gently pull towards neighbors
+        // gently pull towards neighbors (very mild so it doesn't shrink the curve)
         const targetX = (prev.x + next.x) / 2;
         const targetY = (prev.y + next.y) / 2;
-        p.x += (targetX - p.x) * 0.15;
-        p.y += (targetY - p.y) * 0.15;
+        p.x += (targetX - p.x) * 0.005;
+        p.y += (targetY - p.y) * 0.005;
 
-        // smooth velocities too
+        // smooth velocities to prevent sharp angular tangles
         const targetVx = (prev.vx + next.vx) / 2;
         const targetVy = (prev.vy + next.vy) / 2;
-        p.vx += (targetVx - p.vx) * 0.15;
-        p.vy += (targetVy - p.vy) * 0.15;
+        p.vx += (targetVx - p.vx) * 0.08;
+        p.vy += (targetVy - p.vy) * 0.08;
       }
     }
 
