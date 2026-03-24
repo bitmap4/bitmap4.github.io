@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  tech?: string[];
+  github?: string;
+  website?: string;
+  href: string;
+}
+
+const { title, description, tech, github, website, href } = Astro.props;
+---
+
+<article class="project-card">
+  <div class="project-card__header">
+    <a href={href} class="project-card__title">{title}</a>
+    {tech && (
+      <div class="project-card__tech">
+        {tech.slice(0, 4).map((t) => <span class="tech-tag">{t}</span>)}
+      </div>
+    )}
+  </div>
+  <p class="project-card__desc">{description}</p>
+  <div class="project-card__links">
+    <a href={href} class="project-card__link">read more <Icon name="arrow-right" size={11} /></a>
+    {github && <a href={github} class="project-card__link" target="_blank" rel="noopener noreferrer">github <Icon name="external" size={11} /></a>}
+    {website && <a href={website} class="project-card__link" target="_blank" rel="noopener noreferrer">website <Icon name="external" size={11} /></a>}
+  </div>
+</article>

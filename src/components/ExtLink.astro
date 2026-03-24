@@ -1,0 +1,27 @@
+---
+/**
+ * External link with icon.
+ * Usage: <ExtLink href="https://...">Label</ExtLink>
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: cls } = Astro.props;
+---
+
+<a href={href} class:list={['ext-link', cls]} target="_blank" rel="noopener noreferrer">
+  <slot />
+  <Icon name="external" size={12} />
+</a>
+
+<style>
+  .ext-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+  }
+</style>

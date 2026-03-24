@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Projects — Abhyudit Singh" description="Software development and systems projects">
+  <div class="page-header">
+    <h1 class="page-header__title">Projects</h1>
+    <p class="page-header__desc">Things I've built.</p>
+  </div>
+  <div class="project-list">
+    {projects.map((project) => (
+      <ProjectCard
+        title={project.data.title}
+        description={project.data.description}
+        tech={project.data.tech}
+        github={project.data.github}
+        website={project.data.website}
+        href={`/projects/${project.id.replace(/\.md$/, '')}`}
+      />
+    ))}
+  </div>
+</Base>

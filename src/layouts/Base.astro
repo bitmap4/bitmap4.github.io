@@ -1,0 +1,63 @@
+---
+import Icon from '../components/Icon.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Abhyudit Singh — Developer & Researcher" } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container container--wide">
+        <div class="site-header__inner">
+          <a href="/" class="site-header__name">Abhyudit Singh</a>
+          <nav>
+            <ul class="site-nav">
+              <li><a href="/projects" class:list={[{ active: currentPath.startsWith('/projects') }]}>projects</a></li>
+              <li><a href="/research" class:list={[{ active: currentPath.startsWith('/research') }]}>research</a></li>
+              <li><a href="/blog" class:list={[{ active: currentPath.startsWith('/blog') }]}>blog</a></li>
+              <li><a href="/misc" class:list={[{ active: currentPath.startsWith('/misc') }]}>misc</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container container--wide">
+        <div class="site-footer__inner">
+          <ul class="site-footer__links">
+            <li><a href="https://github.com/bitmap4" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a href="https://linkedin.com/in/abhyudit-singh" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://codeforces.com/profile/BitMap4" target="_blank" rel="noopener noreferrer">Codeforces</a></li>
+            <li><a href="mailto:abhyudit.singh@research.iiit.ac.in">Email</a></li>
+          </ul>
+          <span class="site-footer__copy">© 2025 Abhyudit Singh</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

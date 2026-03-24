@@ -1,0 +1,48 @@
+---
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'projects'> | CollectionEntry<'research'> | CollectionEntry<'blog'>;
+  backLink: string;
+  backLabel: string;
+}
+
+const { entry, backLink, backLabel } = Astro.props;
+const { Content } = await entry.render();
+const { title, description, tech } = entry.data;
+const github = 'github' in entry.data ? entry.data.github : undefined;
+const website = 'website' in entry.data ? entry.data.website : undefined;
+const report = 'report' in entry.data ? entry.data.report : undefined;
+const date = 'date' in entry.data ? entry.data.date : undefined;
+---
+
+<Base title={`${title} — Abhyudit Singh`} description={description}>
+  <article class="project-detail">
+    <a href={backLink} class="project-detail__back"><Icon name="arrow-left" size={13} /> {backLabel}</a>
+    <h1 class="project-detail__title">{title}</h1>
+    {date && (
+      <div class="project-detail__date">
+        <Icon name="calendar" size={13} />
+        <time>{new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+      </div>
+    )}
+    {tech && tech.length > 0 && (
+      <div class="project-detail__meta">
+        {tech.map((t: string) => <span class="tech-tag">{t}</span>)}
+      </div>
+    )}
+    {(github || website || report) && (
+      <div class="project-detail__meta">
+        {github && <a href={github} class="project-card__link" target="_blank" rel="noopener noreferrer">GitHub <Icon name="external" size={11} /></a>}
+        {website && <a href={website} class="project-card__link" target="_blank" rel="noopener noreferrer">Website <Icon name="external" size={11} /></a>}
+        {report && <a href={report} class="project-card__link" target="_blank" rel="noopener noreferrer">Report <Icon name="external" size={11} /></a>}
+      </div>
+    )}
+    <hr />
+    <div class="project-detail__content">
+      <Content />
+    </div>
+  </article>
+</Base>

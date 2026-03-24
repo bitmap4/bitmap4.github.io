@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import ExtLink from '../components/ExtLink.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const featured = projects.filter((p) => p.data.featured);
+const research = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+
+const blog = (await getCollection('blog'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const latestPost = blog[0];
+---
+
+<Base title="Abhyudit Singh" description="Developer & Researcher at IIIT Hyderabad">
+  <section class="hero">
+    <span class="hero__greeting">Hello, I'm</span>
+    <h1 class="hero__name">Abhyudit Singh</h1>
+    <p class="hero__bio">
+      Undergraduate at IIIT Hyderabad.
+      Interested in cybersecurity, machine learning, and systems programming.
+      Rated <a href="https://codeforces.com/profile/BitMap4">1592 on Codeforces</a>.
+    </p>
+    <div class="hero__links">
+      <a href="https://github.com/bitmap4" class="hero__link" target="_blank" rel="noopener noreferrer"><Icon name="github" size={15} /> GitHub</a>
+      <span class="hero__link-sep">·</span>
+      <a href="https://linkedin.com/in/abhyudit-singh" class="hero__link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span class="hero__link-sep">·</span>
+      <a href="mailto:abhyudit.singh@research.iiit.ac.in" class="hero__link"><Icon name="mail" size={15} /> Email</a>
+      <span class="hero__link-sep">·</span>
+      <a href="https://drive.google.com/file/d/1L8lr5-B45VnHHbTIvZRya9fNBJOjI8h3/" class="hero__link" target="_blank" rel="noopener noreferrer">Résumé</a>
+    </div>
+  </section>
+
+  {latestPost && (
+    <div class="latest-post-banner">
+      <span class="latest-post-banner__label">Latest post</span>
+      <a href={`/blog/${latestPost.id.replace(/\.md$/, '')}`} class="latest-post-banner__link">
+        {latestPost.data.title} <Icon name="arrow-right" size={12} />
+      </a>
+    </div>
+  )}
+
+  <span class="ornament">§</span>
+
+  <section>
+    <h2 class="section-heading">Featured Work</h2>
+    <div class="project-list">
+      {featured.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          tech={project.data.tech}
+          github={project.data.github}
+          href={`/projects/${project.id.replace(/\.md$/, '')}`}
+        />
+      ))}
+      {research.map((r) => (
+        <ProjectCard
+          title={r.data.title}
+          description={r.data.description}
+          tech={r.data.tech}
+          href={`/research/${r.id.replace(/\.md$/, '')}`}
+        />
+      ))}
+    </div>
+  </section>
+
+  <span class="ornament">§</span>
+
+  <section>
+    <h2 class="section-heading">Open Source</h2>
+    <div class="misc-item">
+      <div class="misc-item__title">Microsoft PowerToys</div>
+      <p class="misc-item__desc">
+        Contributed to <ExtLink href="https://github.com/microsoft/PowerToys">Microsoft PowerToys</ExtLink>, a set of utilities for power users to streamline their Windows experience.
+      </p>
+    </div>
+  </section>
+</Base>
