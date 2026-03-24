@@ -1,0 +1,250 @@
+---
+/**
+ * Generative ink-flow canvas — the hero focal point.
+ * Draws organic, flowing ink strokes that animate continuously
+ * and respond subtly to mouse movement.
+ */
+---
+
+<div class="ink-canvas-wrap">
+  <canvas id="ink-canvas" aria-hidden="true"></canvas>
+</div>
+
+<style>
+  .ink-canvas-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 90% 80% at 70% 50%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 70% 50%, black 20%, transparent 75%);
+  }
+
+  #ink-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('ink-canvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+
+  let width: number, height: number;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let mouse = { x: -1000, y: -1000 };
+  let animId: number;
+
+  function resize() {
+    const rect = canvas.parentElement!.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  class InkStroke {
+    points: { x: number; y: number; vx: number; vy: number }[];
+    color: string;
+    baseWidth: number;
+    noiseOffset: number;
+    speed: number;
+    wander: number;
+
+    constructor() {
+      this.points = [];
+      // distribute strokes across the canvas
+      const startX = width * (0.25 + Math.random() * 0.65);
+      const startY = height * (0.05 + Math.random() * 0.9);
+      const spread = 100 + Math.random() * 200;
+
+      // 10-20 control points per stroke for longer curves
+      const numPoints = 10 + Math.floor(Math.random() * 11);
+      for (let i = 0; i < numPoints; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * spread;
+        this.points.push({
+          x: startX + Math.cos(angle) * dist + (Math.random() - 0.5) * 60,
+          y: startY + Math.sin(angle) * dist * 0.6 + (i / numPoints) * 80,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+        });
+      }
+
+      // much more visible ink tones
+      const colors = [
+        'rgba(28, 25, 23, 0.18)',
+        'rgba(28, 25, 23, 0.14)',
+        'rgba(28, 25, 23, 0.12)',
+        'rgba(87, 83, 78, 0.13)',
+        'rgba(158, 59, 45, 0.10)',
+        'rgba(158, 59, 45, 0.08)',
+        'rgba(120, 113, 108, 0.11)',
+        'rgba(28, 25, 23, 0.20)',
+      ];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.baseWidth = 1 + Math.random() * 4;
+      this.noiseOffset = Math.random() * 1000;
+      this.speed = 0.08 + Math.random() * 0.2;
+      this.wander = 0.5 + Math.random() * 1.2;
+    }
+
+    update(t: number) {
+      for (const p of this.points) {
+        const nx = Math.sin(t * this.speed + p.y * 0.004 + this.noiseOffset) * this.wander;
+        const ny = Math.cos(t * this.speed + p.x * 0.004 + this.noiseOffset + 1.5) * this.wander;
+
+        p.vx += (nx - p.vx) * 0.015;
+        p.vy += (ny - p.vy) * 0.015;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // mouse repulsion
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 250) {
+          const force = (250 - dist) / 250 * 1.2;
+          p.vx += (dx / dist) * force * 0.2;
+          p.vy += (dy / dist) * force * 0.2;
+        }
+
+        // soft boundary
+        if (p.x < -80) p.vx += 0.08;
+        if (p.x > width + 80) p.vx -= 0.08;
+        if (p.y < -80) p.vy += 0.08;
+        if (p.y > height + 80) p.vy -= 0.08;
+      }
+    }
+
+    draw(t: number) {
+      if (this.points.length < 3) return;
+      const pts = this.points;
+
+      ctx.beginPath();
+      ctx.strokeStyle = this.color;
+      ctx.moveTo(pts[0].x, pts[0].y);
+
+      for (let i = 1; i < pts.length - 1; i++) {
+        const xc = (pts[i].x + pts[i + 1].x) / 2;
+        const yc = (pts[i].y + pts[i + 1].y) / 2;
+        ctx.quadraticCurveTo(pts[i].x, pts[i].y, xc, yc);
+      }
+
+      const last = pts[pts.length - 1];
+      ctx.lineTo(last.x, last.y);
+
+      const w = this.baseWidth + Math.sin(t * 0.25 + this.noiseOffset) * 1.5;
+      ctx.lineWidth = Math.max(0.5, w);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+  }
+
+  interface InkDot {
+    x: number;
+    y: number;
+    r: number;
+    opacity: number;
+    drift: number;
+  }
+
+  let strokes: InkStroke[] = [];
+  let dots: InkDot[] = [];
+
+  function init() {
+    resize();
+    strokes = [];
+    dots = [];
+
+    // 20-30 flowing strokes
+    const strokeCount = 20 + Math.floor(Math.random() * 11);
+    for (let i = 0; i < strokeCount; i++) {
+      strokes.push(new InkStroke());
+    }
+
+    // 60-100 scattered ink dots
+    const dotCount = 60 + Math.floor(Math.random() * 41);
+    for (let i = 0; i < dotCount; i++) {
+      dots.push({
+        x: width * (0.1 + Math.random() * 0.85),
+        y: Math.random() * height,
+        r: 0.8 + Math.random() * 3,
+        opacity: 0.04 + Math.random() * 0.12,
+        drift: Math.random() * 1000,
+      });
+    }
+  }
+
+  function drawDots(t: number) {
+    for (const d of dots) {
+      const ox = Math.sin(t * 0.15 + d.drift) * 3;
+      const oy = Math.cos(t * 0.1 + d.drift + 1) * 3;
+
+      // mouse interaction for dots too
+      let fx = 0, fy = 0;
+      const dx = (d.x + ox) - mouse.x;
+      const dy = (d.y + oy) - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 180) {
+        const force = (180 - dist) / 180;
+        fx = (dx / dist) * force * 8;
+        fy = (dy / dist) * force * 8;
+      }
+
+      ctx.beginPath();
+      ctx.arc(d.x + ox + fx, d.y + oy + fy, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(28, 25, 23, ${d.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  let time = 0;
+
+  function frame() {
+    time += 0.016;
+    ctx.clearRect(0, 0, width, height);
+
+    for (const s of strokes) {
+      s.update(time);
+      s.draw(time);
+    }
+
+    drawDots(time);
+    animId = requestAnimationFrame(frame);
+  }
+
+  // mouse tracking — listen on the parent hero section
+  const heroEl = canvas.closest('.hero') || canvas.parentElement?.parentElement;
+  if (heroEl) {
+    (heroEl as HTMLElement).style.pointerEvents = 'auto';
+    heroEl.addEventListener('mousemove', (e: Event) => {
+      const me = e as MouseEvent;
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = me.clientX - rect.left;
+      mouse.y = me.clientY - rect.top;
+    });
+    heroEl.addEventListener('mouseleave', () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
+  }
+
+  init();
+  frame();
+
+  window.addEventListener('resize', () => { init(); });
+
+  // respect prefers-reduced-motion
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mq.matches) {
+    cancelAnimationFrame(animId);
+    for (const s of strokes) s.draw(0);
+    drawDots(0);
+  }
+</script>
